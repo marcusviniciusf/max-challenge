@@ -1,13 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+// Router
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// Styles
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
+import DefaultStyles from "./styles/globalStyles";
+// Pages
+import GenreListPage from "./pages/genreList/GenreList";
+import GenreDetailPage from "./pages/genreDetail/GenreDetail";
+import MyListPage from "./pages/myList/MyList";
+// UI
+import { Container, Header } from "./components";
+// Other
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Container>
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+              <GenreListPage />
+            </Route>
+            <Route exact path="/mylist">
+              <MyListPage />
+            </Route>
+            <Route exact path="/:id">
+              <GenreDetailPage />
+            </Route>
+          </Switch>
+        </Router>
+      </Container>
+      <DefaultStyles />
+    </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

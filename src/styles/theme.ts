@@ -6,11 +6,10 @@ export enum colors {
   greyLight = "#e3dedf",
   white = "#fff",
   teal = "rgb(26,126,152)",
-  error = "red",
-  success = "green",
+  tealStrong = "rgb(17,82,99)",
+  red = "#f44336",
 }
 
-type ColorKeys = keyof typeof colors;
 type BpKeys = keyof typeof breakpoints;
 
 export enum breakpoints {
@@ -39,6 +38,6 @@ export const theme: DefaultTheme = {
   colors,
   space: [0, 10, 20, 30, 40, 60],
   breakpoints: Object.values(breakpoints),
-  fontSizes: [14, 16, 20, 28, 38, 50],
+  fontSizes: [14, 16, 20, 28],
   media,
 };
