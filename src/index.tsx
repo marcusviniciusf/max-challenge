@@ -8,7 +8,7 @@ import { theme } from "./styles/theme";
 import DefaultStyles from "./styles/globalStyles";
 // Pages
 import GenreListPage from "./pages/genreList/GenreList";
-import GenreDetailPage from "./pages/genreDetail/GenreDetail";
+import ArtistPage from "./pages/artist/ArtistDetail";
 import MyListPage from "./pages/myList/MyList";
 // UI
 import { Container, Header } from "./components";
@@ -29,7 +29,7 @@ ReactDOM.render(
               <MyListPage />
             </Route>
             <Route exact path="/:id">
-              <GenreDetailPage />
+              <ArtistPage />
             </Route>
           </Switch>
         </Router>

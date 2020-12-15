@@ -17,10 +17,10 @@ const genreSearch = <T = {}>(q: string, limit = 20) => {
 const genreArtistsSearch = <T = {}>(idArtist: number) => {
   return defaultFetch<T>(`/genres/${idArtist}/artists`);
 };
-const artist = <T = {}>(idArtist: number) => {
+const artist = <T = {}>(idArtist: string) => {
   return defaultFetch<T>(`/artists/${idArtist}`);
 };
-const artistSimilars = <T = {}>(idArtist: number) => {
+const artistSimilars = <T = {}>(idArtist: string) => {
   return defaultFetch<T>(`/artists/${idArtist}/similar`);
 };
 

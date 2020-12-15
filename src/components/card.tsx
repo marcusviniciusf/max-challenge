@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 // Types
 import { ArtistResponse } from "types/api";
@@ -26,62 +27,81 @@ const CardBox = styled.div(
   `
 );
 const CardImage = styled.img(
-  () => css`
+  ({ theme }) => css`
     height: 9rem;
     width: 9rem;
-    margin-right: 2rem;
+    margin-right: 1rem;
+    ${theme.media.md} {
+      margin-right: 2rem;
+    }
   `
 );
 
 interface CardProps {
   artist: ArtistResponse;
-  controlled: boolean;
+  onRemove?(artist: ArtistResponse): void;
 }
 
 export const Card = (props: CardProps) => {
-  const { artist, controlled } = props;
+  const history = useHistory();
+  const { artist, onRemove } = props;
   const { name, genres, id, image } = artist;
   const firstGenreName = genres[0].name || "";
 
   const [myList, setMyList] = useState<ArtistResponse[]>([]);
 
   useEffect(() => {
-    if (!controlled) {
+    if (!onRemove) {
       const listFromStorage = getMyLists();
       setMyList(listFromStorage);
     }
-  }, [controlled]);
+  }, [onRemove]);
 
   const artistIsOnList = useMemo(() => myList.find((ar) => ar.id === id), [myList, id]);
 
   const addRemoveArtist = () => {
     let newList = [];
-    if (artistIsOnList) {
-      newList = removeArtistFromList(artist);
+    if (!onRemove) {
+      if (artistIsOnList) {
+        newList = removeArtistFromList(artist);
+      } else {
+        newList = addArtistToList(artist);
+      }
+      setMyList(newList);
     } else {
-      newList = addArtistToList(artist);
+      onRemove(artist);
     }
-    setMyList(newList);
   };
 
+  const btnColor = artistIsOnList || onRemove ? "secondary" : "primary";
+
   return (
-    <CardBox>
+    <CardBox
+      onClick={() => {
+        history.push(`/${id}`);
+      }}
+    >
       <CardImage alt={`Artists__${name}`} src={image} />
-      <Flex flex={0.8} flexDirection="column" alignItems="center" justifyContent="center">
-        <Text mb={"5px"} fontWeight="bold">
-          {name}
-        </Text>
-        <SmallText>{firstGenreName}</SmallText>
-      </Flex>
-      <Flex flex={0.2} alignItems="center" justifyContent="center">
-        <Button fullWidth color={"secondary"} onClick={addRemoveArtist}>
-          {!artistIsOnList && !controlled ? "ADD" : "REMOVE"}
-        </Button>
+      <Flex flex={1} flexDirection={["column", "column", "row"]}>
+        <Flex flex={0.8} flexDirection="column" alignItems="center" justifyContent="center">
+          <Text mb={"5px"} fontWeight="bold">
+            {name}
+          </Text>
+          <SmallText>{firstGenreName}</SmallText>
+        </Flex>
+        <Flex flex={0.2} alignItems="center" justifyContent="center">
+          <Button
+            fullWidth
+            color={btnColor}
+            onClick={(e) => {
+              e.stopPropagation();
+              addRemoveArtist();
+            }}
+          >
+            {!artistIsOnList && !onRemove ? "ADD" : "REMOVE"}
+          </Button>
+        </Flex>
       </Flex>
     </CardBox>
   );
-};
-
-Card.defaultProps = {
-  controlled: false,
 };

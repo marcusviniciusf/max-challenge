@@ -7,7 +7,8 @@ export enum colors {
   white = "#fff",
   teal = "rgb(26,126,152)",
   tealStrong = "rgb(17,82,99)",
-  red = "#f44336",
+  red = "#d50000",
+  redLight = "#e53935",
 }
 
 type BpKeys = keyof typeof breakpoints;

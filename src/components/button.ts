@@ -16,7 +16,7 @@ export const Button = styled.a<ButtonProps>(
     transition: background-color 0.3s ease;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
     width: ${fullWidth ? "100%" : "initial"};
-    ${color === "secondary"
+    ${color === "primary"
       ? css`
           background-color: ${theme.colors.teal};
           &:hover {
@@ -26,7 +26,7 @@ export const Button = styled.a<ButtonProps>(
       : css`
           background-color: ${theme.colors.red};
           &:hover {
-            background-color: ${theme.colors.tealStrong};
+            background-color: ${theme.colors.redLight};
           }
         `};
   `

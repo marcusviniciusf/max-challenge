@@ -5,9 +5,12 @@ import { genreSearch, genreArtistsSearch } from "services/api";
 import { GenreResponse, ArtistResponse } from "types/api";
 // View
 import GenreListView from "./components/GenreList.view";
+// Utils
+import { useDebounce } from "utils/useDebounce";
 
 const GenreListPage = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const [debouncedValue, searchValue, setSearchValue] = useDebounce("", 400);
+  // const [searchValue, setSearchValue] = useState("");
 
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchArtistsLoading, setArtistsLoading] = useState(false);
@@ -21,7 +24,7 @@ const GenreListPage = () => {
   const doSearch = async (value: string) => {
     try {
       setSearchLoading(true);
-      const { data } = await genreSearch<GenreResponse[]>(value, 10);
+      const { data } = await genreSearch<GenreResponse[]>(value, 40);
       setSearchResults(data);
       setSearchLoading(false);
     } catch (error) {
@@ -41,10 +44,10 @@ const GenreListPage = () => {
   };
 
   useEffect(() => {
-    if (searchValue.length > 2) {
-      doSearch(searchValue);
+    if (debouncedValue.length > 2) {
+      doSearch(debouncedValue);
     }
-  }, [searchValue]);
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (selectedGenre?.id) {

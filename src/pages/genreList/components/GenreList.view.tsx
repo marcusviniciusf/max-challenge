@@ -35,7 +35,6 @@ const GenreListView = (props: GenreListViewProps) => {
     artists,
     searchArtistsLoading,
   } = props;
-  console.log("searchArtistsLoading: ", searchArtistsLoading);
 
   const isListOpen = useMemo(() => {
     return (searchFocused && searchResults.length > 0) || searchLoading;

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Text } from "./typography";
+import { Text, H1 } from "./typography";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 const HeaderButtonBack = styled.a(
@@ -17,6 +17,8 @@ const HeaderButtonBack = styled.a(
   `
 );
 
+const HeaderTitle = styled(H1)``;
+
 const HeaderButtonLink = styled(Link)`
   margin-left: auto;
   text-decoration: none;
@@ -25,6 +27,7 @@ const HeaderButtonLink = styled(Link)`
 
 const HeaderStyled = styled.header(
   () => css`
+    position: relative;
     padding: 3rem 0;
     display: flex;
     align-items: center;
@@ -35,16 +38,21 @@ const HeaderStyled = styled.header(
 export const Header = () => {
   const history = useHistory();
   const match = !!useRouteMatch(["/:id", "/mylist"]);
+  const isMyListPage = !!useRouteMatch("/mylist");
   return (
     <HeaderStyled>
       {match && (
-        <HeaderButtonBack onClick={() => history.goBack()}>
+        <HeaderButtonBack onClick={() => history.push("/")}>
           <Text>Back to Search</Text>
         </HeaderButtonBack>
       )}
-      <HeaderButtonLink to="/mylist">
-        <Text>View My Lists</Text>
-      </HeaderButtonLink>
+      {isMyListPage ? (
+        <HeaderTitle ml="auto">My List</HeaderTitle>
+      ) : (
+        <HeaderButtonLink to="/mylist">
+          <Text>View My Lists</Text>
+        </HeaderButtonLink>
+      )}
     </HeaderStyled>
   );
 };
